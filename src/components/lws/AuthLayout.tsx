@@ -20,7 +20,7 @@ export function AuthLayout({ title, sub, children }: { title: string; sub: strin
   );
 }
 
-export function Field({ label, error, ...p }: React.InputHTMLAttributes<HTMLInputElement> & { label: string; error?: string }) {
+export function Field({ label, error, ...p }: React.InputHTMLAttributes<HTMLInputElement> & { label: string; error?: string | undefined }) {
   return (
     <label className="block text-sm font-medium text-navy">
       {label}

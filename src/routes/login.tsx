@@ -17,17 +17,17 @@ function Login() {
     e.preventDefault();
     const f = new FormData(e.currentTarget);
     const n: Record<string, string> = {};
-    if (!String(f.get("id")).trim()) n.id = "Enter your email or phone";
-    if (String(f.get("pw")).length < 6) n.pw = "Password must be at least 6 characters";
+    if (!String(f.get("id")).trim()) n["id"] = "Enter your email or phone";
+    if (String(f.get("pw")).length < 6) n["pw"] = "Password must be at least 6 characters";
     setErr(n);
     if (!Object.keys(n).length) setMsg("Sign-in isn't connected yet — accounts are coming soon.");
   };
   return (
     <AuthLayout title="Welcome Back" sub="Sign in to continue your career journey.">
       <form onSubmit={submit} className="space-y-4" noValidate>
-        <Field label="Email or phone" name="id" autoComplete="username" error={err.id} />
+        <Field label="Email or phone" name="id" autoComplete="username" error={err["id"]} />
         <div className="relative">
-          <Field label="Password" name="pw" type={show ? "text" : "password"} autoComplete="current-password" error={err.pw} />
+          <Field label="Password" name="pw" type={show ? "text" : "password"} autoComplete="current-password" error={err["pw"]} />
           <button type="button" onClick={() => setShow((s) => !s)} className="absolute right-3 top-9 p-1 text-muted-foreground" aria-label={show ? "Hide password" : "Show password"}>
             {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
           </button>
