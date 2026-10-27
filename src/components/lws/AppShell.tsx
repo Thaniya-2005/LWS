@@ -5,6 +5,7 @@ import {
 } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { Logo } from "./Logo";
+import { Button } from "@/components/ui/button";
 
 type Item = { to: string; label: string; icon: typeof Home; soon?: boolean };
 
@@ -65,17 +66,18 @@ export function AppShell({ children }: { children: ReactNode }) {
       <header className="sticky top-0 z-40 border-b bg-card/95 backdrop-blur">
         <div className="grid h-16 grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-4 md:grid-cols-[auto_minmax(0,1fr)_auto] md:px-6">
           <div className="flex min-w-0 items-center gap-3">
-            <button
+            <Button variant="ghost" size="icon"
+              title={collapsed ? "Expand menu" : "Collapse menu"}
               onClick={() => setCollapsed((c) => !c)}
               className="hidden rounded-lg p-2 text-navy hover:bg-muted md:inline-flex"
               aria-label={collapsed ? "Expand menu" : "Collapse menu"}
             >
               {collapsed ? <PanelLeftOpen className="h-5 w-5" /> : <PanelLeftClose className="h-5 w-5" />}
-            </button>
+            </Button>
             <Logo tagline />
           </div>
           <form onSubmit={onSearch} className="hidden max-w-xl md:block md:w-full md:justify-self-center">
-            <label className="flex items-center gap-2 rounded-xl bg-muted px-4 py-2.5 text-sm">
+            <label className="flex items-center gap-2 rounded-lg bg-muted px-4 py-2.5 text-sm">
               <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
               <input
                 value={q}
@@ -90,15 +92,15 @@ export function AppShell({ children }: { children: ReactNode }) {
             <Link to="/courses" className="rounded-lg p-2 text-navy hover:bg-muted md:hidden" aria-label="Search">
               <Search className="h-5 w-5" />
             </Link>
-            <button className="rounded-lg p-2 text-navy hover:bg-muted" aria-label="Notifications (none)">
+            <Button variant="ghost" size="icon" title="No notifications" aria-label="Notifications (none)">
               <Bell className="h-5 w-5" />
-            </button>
-            <Link
+            </Button>
+            <Button asChild variant="ghost" className="h-auto p-0"><Link
               to="/login"
-              className="ml-1 inline-flex items-center gap-2 rounded-xl bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90"
+              className="ml-1 inline-flex items-center gap-2 rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90"
             >
               <LogIn className="h-4 w-4" /> <span className="hidden sm:inline">Sign in</span>
-            </Link>
+            </Link></Button>
           </div>
         </div>
       </header>
@@ -107,13 +109,13 @@ export function AppShell({ children }: { children: ReactNode }) {
         {/* Sidebar tablet/desktop */}
         <aside
           className={`sticky top-16 hidden h-[calc(100vh-4rem)] shrink-0 overflow-y-auto border-r bg-sidebar transition-all md:block ${
-            collapsed ? "w-[72px]" : "w-[72px] lg:w-64"
+            collapsed ? "w-[72px]" : "w-[72px] lg:w-[216px]"
           }`}
         >
-          <nav className="flex flex-col gap-5 p-3" aria-label="Main navigation">
+          <nav className="flex flex-col gap-5 px-3 py-5" aria-label="Main navigation">
             {groups.map((g) => (
-              <div key={g.label}>
-                <p className={`mb-1 px-3 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground ${collapsed ? "hidden" : "hidden lg:block"}`}>
+              <div key={g.label} className="border-b pb-4 last:border-b-0">
+                <p className={`mb-3 px-3 text-[10px] font-semibold uppercase text-muted-foreground ${collapsed ? "hidden" : "hidden lg:block"}`}>
                   {g.label}
                 </p>
                 {g.items.map((it) => {
@@ -123,7 +125,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                       key={it.to}
                       to={it.to}
                       title={it.label}
-                      className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${
+                      className={`flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium transition-colors ${
                         active ? "bg-sidebar-accent text-sidebar-accent-foreground" : "text-sidebar-foreground hover:bg-muted"
                       }`}
                     >
@@ -161,7 +163,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                   active ? "text-primary" : "text-muted-foreground"
                 }`}
               >
-                <span className={`rounded-xl px-3 py-1 ${active ? "bg-primary-soft" : ""}`}>
+                <span className={`rounded-lg px-3 py-1 ${active ? "bg-primary-soft" : ""}`}>
                   <it.icon className="h-5 w-5" />
                 </span>
                 {it.label}

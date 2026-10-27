@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Use shared Page and PageTitle layouts for content routes, with optional full-width illustrated banners; this keeps reference styling consistent without inventing learner data.

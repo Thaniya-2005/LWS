@@ -1,21 +1,25 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import type { ReactNode } from "react";
+import { Button } from "@/components/ui/button";
 
 export function Page({ children }: { children: ReactNode }) {
-  return <div className="mx-auto w-full max-w-7xl space-y-8 px-4 py-5 md:px-6 md:py-6">{children}</div>;
+  return <div className="mx-auto w-full max-w-7xl space-y-6 px-4 py-5 md:px-6 md:py-6">{children}</div>;
 }
 
-export function PageTitle({ eyebrow, title, accent, sub, children }: { eyebrow?: string; title: string; accent?: string; sub?: string; children?: ReactNode }) {
+export function PageTitle({ eyebrow, title, accent, sub, image, children }: { image?: string; eyebrow?: string; title: string; accent?: string; sub?: string; children?: ReactNode }) {
   return (
-    <div className="rounded-2xl bg-hero p-5 md:p-8">
+    <section className={image ? "reference-banner" : "py-1"}>
+      {image && <img src={image} alt="" className="banner-art" />}
+      <div className={image ? "banner-copy" : ""}>
       {eyebrow && <p className="text-xs font-bold uppercase tracking-wider text-accent-foreground">{eyebrow}</p>}
       <h1 className="mt-1 text-2xl font-extrabold md:text-4xl">
         {title} {accent && <span className="text-primary">{accent}</span>}
       </h1>
       {sub && <p className="mt-2 max-w-xl text-sm text-muted-foreground md:text-base">{sub}</p>}
       {children}
-    </div>
+      </div>
+    </section>
   );
 }
 
@@ -40,13 +44,11 @@ export function SectionHead({ icon: Icon, title, sub, to, cta }: { icon?: typeof
 
 export function EmptyState({ icon: Icon, title, text, to, cta }: { icon: typeof ArrowRight; title: string; text: string; to: string; cta: string }) {
   return (
-    <div className="flex flex-col items-center rounded-2xl border border-dashed bg-card p-8 text-center">
+    <div className="flex flex-col items-center rounded-lg border bg-card py-12 px-6 text-center">
       <span className="rounded-2xl bg-primary-soft p-3"><Icon className="h-6 w-6 text-primary" /></span>
       <h3 className="mt-3 font-bold">{title}</h3>
       <p className="mt-1 max-w-sm text-sm text-muted-foreground">{text}</p>
-      <Link to={to} className="mt-4 inline-flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">
-        {cta} <ArrowRight className="h-4 w-4" />
-      </Link>
+      <Button asChild className="mt-4"><Link to={to}>{cta} <ArrowRight className="h-4 w-4" /></Link></Button>
     </div>
   );
 }

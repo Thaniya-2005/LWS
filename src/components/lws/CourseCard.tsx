@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, BarChart3, Clock, Lock } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { type Course, formatPrice } from "@/lib/courses";
 
 export function AccessBadge({ course }: { course: Course }) {
@@ -16,9 +17,9 @@ export function AccessBadge({ course }: { course: Course }) {
 export function CourseCard({ course }: { course: Course }) {
   const soon = course.access === "coming-soon";
   return (
-    <article className={`group flex flex-col overflow-hidden rounded-2xl border bg-card shadow-card transition hover:-translate-y-0.5 hover:shadow-lift ${soon ? "opacity-80" : ""}`}>
-      <Link to="/courses/$courseId" params={{ courseId: course.id }} className="relative block aspect-[3/2] overflow-hidden bg-muted">
-        <img src={course.thumbnail} alt={course.title} loading="lazy" className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]" />
+    <article className={`group flex flex-col overflow-hidden rounded-lg border bg-card shadow-card transition hover:-translate-y-0.5 hover:shadow-lift ${soon ? "opacity-80" : ""}`}>
+      <Link to="/courses/$courseId" params={{ courseId: course.id }} className="relative block aspect-video overflow-hidden bg-muted">
+        <img src={course.thumbnail} alt={course.title} loading="lazy" className="h-full w-full object-contain transition duration-500 group-hover:scale-[1.03]" />
         <div className="absolute left-3 top-3"><AccessBadge course={course} /></div>
       </Link>
       <div className="flex flex-1 flex-col gap-2 p-4">
@@ -33,7 +34,7 @@ export function CourseCard({ course }: { course: Course }) {
           <span className={`text-base font-bold ${course.price === 0 ? "text-success" : "text-navy"}`}>{formatPrice(course.price)}</span>
         </div>
         <div className="grid grid-cols-2 gap-2 pt-2">
-          <Link to="/courses/$courseId" params={{ courseId: course.id }} className="rounded-xl border px-3 py-2 text-center text-sm font-semibold text-navy hover:bg-muted">
+          <Link to="/courses/$courseId" params={{ courseId: course.id }} className="rounded-lg border px-3 py-2 text-center text-sm font-semibold text-navy hover:bg-muted">
             View Details
           </Link>
           <CourseAction course={course} />
@@ -44,9 +45,9 @@ export function CourseCard({ course }: { course: Course }) {
 }
 
 export function CourseAction({ course }: { course: Course }) {
-  const base = "inline-flex items-center justify-center gap-1.5 rounded-xl px-3 py-2 text-sm font-semibold";
+  const base = "inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold";
   if (course.access === "coming-soon")
-    return <button disabled className={`${base} cursor-not-allowed bg-muted text-muted-foreground`}>Coming Soon</button>;
+    return <Button disabled className={`${base} cursor-not-allowed bg-muted text-muted-foreground`}>Coming Soon</Button>;
   if (course.access === "locked")
     return (
       <Link to="/courses/$courseId" params={{ courseId: course.id }} className={`${base} bg-primary-soft text-accent-foreground`}>
