@@ -62,7 +62,7 @@ function Home() {
         <SectionHead icon={Target} title="Explore by career goal" sub="Choose a topic and find the right courses for you." to="/courses" />
         <div className="grid grid-cols-3 gap-3 sm:grid-cols-5">
           {categories.map((c, i) => {
-            const Icon = catIcons[i];
+            const Icon = catIcons[i] ?? Rocket;
             return (
               <Link key={c.name} to="/courses" search={{ cat: c.name }} className="flex flex-col items-center gap-2 rounded-2xl border bg-card p-3 text-center shadow-card transition hover:-translate-y-0.5">
                 <span className={`rounded-xl p-2.5 ${c.tone}`}><Icon className="h-5 w-5 text-navy" /></span>

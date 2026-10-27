@@ -5,10 +5,10 @@ import { Page, PageTitle, seo } from "@/components/lws/Section";
 import { CourseCard } from "@/components/lws/CourseCard";
 import { categories, courses } from "@/lib/courses";
 
-type S = { q?: string; cat?: string; price?: "free" | "paid"; sort?: "popular" | "low" | "high" };
+type S = { q?: string | undefined; cat?: string | undefined; price?: "free" | "paid" | undefined; sort?: "low" | "high" | undefined };
 
 export const Route = createFileRoute("/courses/")({
-  validateSearch: (s: Record<string, unknown>): S => ({
+  validateSearch: (s: { q?: unknown; cat?: unknown; price?: unknown; sort?: unknown }): S => ({
     q: typeof s.q === "string" ? s.q : undefined,
     cat: typeof s.cat === "string" ? s.cat : undefined,
     price: s.price === "free" || s.price === "paid" ? s.price : undefined,
