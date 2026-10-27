@@ -17,8 +17,8 @@ const features = [
 function AI() {
   return (
     <Page>
-      <section className="grid items-center gap-6 rounded-2xl bg-hero p-6 md:grid-cols-[auto_minmax(0,1fr)] md:p-8">
-        <img src={avatar.url} alt="Shikkha, the LWS AI assistant" className="h-28 w-28 rounded-full border-4 border-card object-cover shadow-lift md:h-36 md:w-36" />
+      <section className="grid items-center gap-8 bg-cream p-6 md:grid-cols-[minmax(0,1fr)_minmax(240px,.8fr)] md:p-10">
+        <img src={avatar.url} alt="Shikkha, the LWS AI assistant" className="order-last mx-auto aspect-square w-56 rounded-full border-4 border-card object-cover shadow-lift md:w-full md:max-w-80" />
         <div>
           <span className="inline-flex items-center gap-1 rounded-full bg-navy px-3 py-1 text-xs font-semibold text-primary-foreground"><Clock className="h-3.5 w-3.5" /> Coming Soon</span>
           <h1 className="mt-3 text-2xl font-extrabold md:text-4xl">AI with <span className="text-primary">Shikkha</span></h1>
@@ -27,13 +27,14 @@ function AI() {
       </section>
       <div className="grid gap-4 md:grid-cols-3">
         {features.map((f) => (
-          <div key={f.t} className="rounded-2xl border bg-card p-5">
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-soft"><f.i className="h-5 w-5 text-primary" /></span>
+          <div key={f.t} className="rounded-lg border bg-card p-5">
+            <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-soft"><f.i className="h-5 w-5 text-primary" /></span>
             <h3 className="mt-3 font-bold">{f.t}</h3>
             <p className="text-sm text-muted-foreground">{f.d}</p>
           </div>
         ))}
       </div>
+      <section className="border-t py-8 text-center"><h2 className="text-3xl font-bold text-accent-foreground">Coming Soon</h2><p className="mt-2 text-muted-foreground">We’re working on something amazing for you!</p></section>
     </Page>
   );
 }

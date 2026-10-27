@@ -10,8 +10,8 @@
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-xl: var(--radius);
+  --radius-2xl: var(--radius);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -52,7 +52,7 @@
 }
 
 :root {
-  --radius: 0.75rem;
+  --radius: 0.5rem;
   --background: #FAFAF7;
   --foreground: #2E2E2E;
   --card: #FFFFFF;
@@ -109,12 +109,13 @@
   }
   h1, h2, h3, h4 {
     color: var(--color-navy);
-    letter-spacing: -0.02em;
+    letter-spacing: 0;
+    font-family: var(--font-display);
   }
 }
 
 @utility bg-hero {
-  background-image: var(--gradient-hero);
+  background-color: var(--background);
 }
 @utility shadow-card {
   box-shadow: var(--shadow-card);
@@ -146,4 +147,17 @@
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* Reference screen composition: compact shell and illustrated full-width bands. */
+.reference-banner { position: relative; isolation: isolate; overflow: hidden; min-height: 240px; background: var(--cream); }
+.reference-banner > .banner-art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: right center; z-index: -1; }
+.reference-banner .banner-copy { max-width: 58%; padding: 28px 24px; }
+.reference-banner .banner-copy h1 { line-height: 1.16; }
+.reference-banner .banner-copy p { max-width: 460px; }
+@media (max-width: 767px) {
+  .reference-banner { min-height: 290px; }
+  .reference-banner > .banner-art { object-position: 68% center; opacity: .28; }
+  .reference-banner .banner-copy { max-width: 100%; padding: 24px 20px; }
+  .home-banner > .banner-art { opacity: .42; object-position: 65% center; }
 }

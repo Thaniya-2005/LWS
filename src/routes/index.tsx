@@ -18,19 +18,19 @@ function Home() {
   const navigate = useNavigate();
   return (
     <Page>
-      <section className="relative overflow-hidden rounded-2xl bg-hero">
-        <img src={hero} alt="" width={1280} height={720} className="absolute inset-y-0 right-0 hidden h-full w-3/5 object-cover object-right md:block [mask-image:linear-gradient(to_right,transparent,black_35%)]" />
-        <div className="relative max-w-lg p-5 md:p-10">
+      <section className="reference-banner home-banner">
+        <img src={hero} alt="" width={1280} height={720} className="banner-art" />
+        <div className="banner-copy">
           <p className="text-xs font-bold uppercase tracking-wider text-accent-foreground">Good to see you,</p>
-          <h1 className="mt-1 text-3xl font-extrabold md:text-5xl">
+          <h1 className="mt-1 text-3xl font-extrabold md:text-4xl">
             Future <span className="text-primary">Achiever!</span>
           </h1>
           <p className="mt-3 text-sm text-muted-foreground md:text-lg">Keep building your skills and moving closer to your career goals.</p>
           <div className="mt-5 flex flex-wrap gap-3">
-            <Link to="/courses" className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-lift">
+            <Link to="/courses" className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-lift">
               Explore Courses <ArrowRight className="h-4 w-4" />
             </Link>
-            <Link to="/my-learning" className="rounded-xl border border-navy/20 bg-card px-5 py-2.5 text-sm font-semibold text-navy">
+            <Link to="/my-learning" className="rounded-lg border border-navy/20 bg-card px-5 py-2.5 text-sm font-semibold text-navy">
               Continue Learning
             </Link>
           </div>
@@ -38,7 +38,7 @@ function Home() {
             onSubmit={(e) => { e.preventDefault(); navigate({ to: "/courses", search: { q } }); }}
             className="mt-5 md:hidden"
           >
-            <label className="flex items-center gap-2 rounded-xl border bg-card px-4 py-3 text-sm">
+            <label className="flex items-center gap-2 rounded-lg border bg-card px-4 py-3 text-sm">
               <Search className="h-4 w-4 text-muted-foreground" />
               <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search courses, skills or topics…" className="w-full bg-transparent outline-none" />
             </label>
@@ -64,8 +64,8 @@ function Home() {
           {categories.map((c, i) => {
             const Icon = catIcons[i] ?? Rocket;
             return (
-              <Link key={c.name} to="/courses" search={{ cat: c.name }} className="flex flex-col items-center gap-2 rounded-2xl border bg-card p-3 text-center shadow-card transition hover:-translate-y-0.5">
-                <span className={`rounded-xl p-2.5 ${c.tone}`}><Icon className="h-5 w-5 text-navy" /></span>
+              <Link key={c.name} to="/courses" search={{ cat: c.name }} className="flex flex-col items-center gap-2 rounded-lg border bg-card p-3 text-center shadow-card transition hover:-translate-y-0.5">
+                <span className={`rounded-lg p-2.5 ${c.tone}`}><Icon className="h-5 w-5 text-navy" /></span>
                 <span className="text-xs font-semibold text-navy sm:text-sm">{c.name}</span>
               </Link>
             );
@@ -83,7 +83,7 @@ function Home() {
             { to: "/community", l: "Community", i: Users },
             { to: "/subscriptions", l: "Subscriptions", i: CreditCard },
           ].map((a) => (
-            <Link key={a.to} to={a.to} className="flex items-center gap-3 rounded-2xl border bg-card p-4 text-sm font-semibold text-navy hover:bg-primary-soft">
+            <Link key={a.to} to={a.to} className="flex items-center gap-3 rounded-lg border bg-card p-4 text-sm font-semibold text-navy hover:bg-primary-soft">
               <a.i className="h-5 w-5 shrink-0 text-primary" /> {a.l}
             </Link>
           ))}
