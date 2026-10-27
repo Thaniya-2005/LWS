@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import logo from "@/assets/lws-logo.png.asset.json";
 
 export function Splash() {
   const [show, setShow] = useState(false);
@@ -12,9 +13,7 @@ export function Splash() {
   if (!show) return null;
   return (
     <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background" aria-hidden>
-      <div className="animate-logo-in font-display text-6xl font-extrabold tracking-tight text-navy">
-        LW<span className="text-primary">S.</span>
-      </div>
+      <img src={logo.url} alt="" className="animate-logo-in h-40 w-auto" />
       <p className="mt-4 animate-fade-up text-sm text-muted-foreground [animation-delay:400ms]">Your next chapter starts here.</p>
     </div>
   );
