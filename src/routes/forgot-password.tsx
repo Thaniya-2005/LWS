@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { AuthLayout, Field } from "@/components/lws/AuthLayout";
 import { seo } from "@/components/lws/Section";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/forgot-password")({
   head: () => seo("Reset password — LWS", "Reset your LWS account password."),
@@ -16,17 +17,18 @@ function Forgot() {
       <form
         noValidate
         className="space-y-4"
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
-          const v = String(new FormData(e.currentTarget).get("email"));
+          const v = String(new FormData(e.currentTarget).get("email")).trim();
           if (!/^\S+@\S+\.\S+$/.test(v)) return setErr("Enter a valid email");
           setErr("");
-          setMsg("Password reset isn't connected yet — coming soon.");
+          const { error } = await supabase.auth.resetPasswordForEmail(v, { redirectTo: `${window.location.origin}/reset-password` });
+          setMsg(error ? error.message : "If an account exists for that email, a reset link is on its way.");
         }}
       >
         <Field label="Email" name="email" type="email" error={err} />
-        <button className="w-full rounded-xl bg-primary py-3 text-sm font-semibold text-primary-foreground">Send reset link</button>
-        {msg && <p className="rounded-xl bg-muted p-3 text-sm text-muted-foreground">{msg}</p>}
+        <button className="w-full rounded-lg bg-primary py-3 text-sm font-semibold text-primary-foreground">Send reset link</button>
+        {msg && <p className="rounded-lg bg-muted p-3 text-sm text-muted-foreground">{msg}</p>}
       </form>
       <p className="mt-6 text-center text-sm"><Link to="/login" className="font-semibold text-primary">Back to sign in</Link></p>
     </AuthLayout>
