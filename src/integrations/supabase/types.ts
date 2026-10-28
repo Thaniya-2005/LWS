@@ -14,7 +14,72 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      enrollments: {
+        Row: {
+          completed_at: string | null
+          course_id: string
+          created_at: string
+          id: string
+          last_accessed_at: string
+          progress: number
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          course_id: string
+          created_at?: string
+          id?: string
+          last_accessed_at?: string
+          progress?: number
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          course_id?: string
+          created_at?: string
+          id?: string
+          last_accessed_at?: string
+          progress?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          career_interests: string[]
+          created_at: string
+          experience_level: string | null
+          full_name: string | null
+          id: string
+          learning_goals: string[]
+          onboarded: boolean
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          career_interests?: string[]
+          created_at?: string
+          experience_level?: string | null
+          full_name?: string | null
+          id: string
+          learning_goals?: string[]
+          onboarded?: boolean
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          career_interests?: string[]
+          created_at?: string
+          experience_level?: string | null
+          full_name?: string | null
+          id?: string
+          learning_goals?: string[]
+          onboarded?: boolean
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
