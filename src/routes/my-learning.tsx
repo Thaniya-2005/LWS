@@ -16,9 +16,9 @@ const tabs = ["All", "In Progress", "Completed"] as const;
 
 function MyLearning() {
   const { ready, user, enrollments, error, refresh } = useAuth();
+  const [tab, setTab] = useState<(typeof tabs)[number]>("All");
   const matchesTab = (e: (typeof enrollments)[number], t: (typeof tabs)[number]) => t === "All" || (t === "Completed" ? e.progress === 100 : e.progress < 100);
   const visible = enrollments.filter((e) => matchesTab(e, tab));
-  const [tab, setTab] = useState<(typeof tabs)[number]>("All");
   return (
     <Page>
       <PageTitle title="My Learning" sub="Your enrolled courses and progress." />
