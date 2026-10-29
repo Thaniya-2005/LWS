@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { getCourse } from "@/lib/courses";
 
 export const Route = createFileRoute("/login")({
-  validateSearch: (search: Record<string, unknown>): { course?: string } => ({ course: typeof search["course"] === "string" && getCourse(search["course"]) ? search["course"] : undefined }),
+  validateSearch: (search: Record<string, unknown>): { course?: string } => typeof search["course"] === "string" && getCourse(search["course"]) ? { course: search["course"] } : {},
   head: () => seo("Sign in — LWS", "Sign in to continue your LWS career learning journey."),
   component: Login,
 });
