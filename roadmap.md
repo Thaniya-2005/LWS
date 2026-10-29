@@ -2,4 +2,10 @@
 - [x] Align shared header, navigation, typography and surfaces with the supplied mockups.
 - [x] Match Home, Courses, My Learning, Counselling, AI, Community and Profile layouts; retain honest unsigned-in states.
 - [x] Apply the same styling to subscriptions, settings, support, course details and account pages.
-- [x] Verify all pages and navigation on desktop and mobile.- [ ] Review the new product development brief and apply any uncovered requirements.
+- [x] Verify all pages and navigation on desktop and mobile.
+- [x] Review the product development brief.
+- [ ] Connect account context, onboarding, learner profile and saved enrolments.
+- [ ] Verify signup, signed-in enrolment, reload and sign-out.
+- [ ] Enable paid checkout after provider approval and confirmed course prices.
+- [ ] Connect counselling after the booking service is supplied.
+- [ ] Publish learning content after actual lessons are supplied.

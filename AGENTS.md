@@ -10,3 +10,5 @@
 <!-- LOVABLE:END -->
 
 - Use shared Page and PageTitle layouts for content routes, with optional full-width illustrated banners; this keeps reference styling consistent without inventing learner data.
+- Keep one AuthProvider around all routes and one identity-change subscriber; clear query and learner state before signing out to prevent stale private data.
+- Save free enrolments through an authenticated server function and restrict enrolment identity columns from learner updates; paid access requires verified payment.
