@@ -7,6 +7,8 @@ export function SocialAuth() {
   const [err, setErr] = useState("");
   const go = async (provider: "google" | "lovable") => {
     setErr("");
+    const course = new URLSearchParams(window.location.search).get("course");
+    if (course) sessionStorage.setItem("lws-enroll-course", course);
     const r = await lovable.auth.signInWithOAuth(provider, { redirect_uri: window.location.origin });
     if (r.error) setErr(r.error.message ?? "Sign-in failed. Please try again.");
   };
