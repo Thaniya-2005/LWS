@@ -5,6 +5,8 @@ import hero from "@/assets/hero-learner.jpg";
 import { Page, SectionHead, EmptyState, seo } from "@/components/lws/Section";
 import { CourseCard } from "@/components/lws/CourseCard";
 import { categories, courses } from "@/lib/courses";
+import { displayName, useAuth } from "@/hooks/use-auth";
+import { useEffect } from "react";
 
 export const Route = createFileRoute("/")({
   head: () => seo("LWS — Home | Your Career, Your Next Chapter", "Continue learning, explore career courses and book counselling with Shikka on LWS."),
@@ -14,8 +16,22 @@ export const Route = createFileRoute("/")({
 const catIcons = [Rocket, MessagesSquare, FileText, Briefcase, Wallet];
 
 function Home() {
+  const { ready, user, profile, enrollments } = useAuth();
   const [q, setQ] = useState("");
   const navigate = useNavigate();
+  useEffect(() => {
+    if (!ready || !user) return;
+    if (profile && !profile.onboarded) { void navigate({ to: "/onboarding" }); return; }
+    const intended = sessionStorage.getItem("lws-enroll-course");
+    if (intended && courses.some((c) => c.id === intended)) {
+      sessionStorage.removeItem("lws-enroll-course");
+      void navigate({ to: "/courses/$courseId", params: { courseId: intended } });
+    }
+  }, [ready, user, profile, navigate]);
+  const learningCourses = enrollments.filter((e) => e.progress < 100).slice(0, 3).flatMap((e) => {
+    const course = courses.find((c) => c.id === e.course_id);
+    return course ? [course] : [];
+  });
   return (
     <Page>
       <section className="reference-banner home-banner">
@@ -23,7 +39,7 @@ function Home() {
         <div className="banner-copy">
           <p className="text-xs font-bold uppercase tracking-wider text-accent-foreground">Good to see you,</p>
           <h1 className="mt-1 text-3xl font-extrabold md:text-4xl">
-            Future <span className="text-primary">Achiever!</span>
+            {user ? displayName(profile, user) : <>Future <span className="text-primary">Achiever!</span></>}
           </h1>
           <p className="mt-3 text-sm text-muted-foreground md:text-lg">Keep building your skills and moving closer to your career goals.</p>
           <div className="mt-5 flex flex-wrap gap-3">
@@ -48,7 +64,7 @@ function Home() {
 
       <section>
         <SectionHead icon={BookOpen} title="Continue Learning" sub="Pick up where you left off and keep making progress." to="/my-learning" />
-        <EmptyState icon={BookOpen} title="No courses started yet" text="Start a course and your progress will show up here." to="/courses" cta="Explore Courses" />
+        {learningCourses.length ? <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{learningCourses.map((c) => <CourseCard key={c.id} course={c} />)}</div> : <EmptyState icon={BookOpen} title="No courses started yet" text="Enrol in a course to add it to your learning journey." to="/courses" cta="Explore Courses" />}
       </section>
 
       <section>

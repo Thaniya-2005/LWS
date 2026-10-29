@@ -3,6 +3,7 @@ import { ArrowLeft, BarChart3, Bookmark, CheckCircle2, Clock, Lock } from "lucid
 import { Page } from "@/components/lws/Section";
 import { AccessBadge, CourseAction } from "@/components/lws/CourseCard";
 import { formatPrice, getCourse } from "@/lib/courses";
+import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/courses/$courseId")({
   loader: ({ params }) => {
@@ -18,6 +19,7 @@ export const Route = createFileRoute("/courses/$courseId")({
         { title: t }, { name: "description", content: d },
         { property: "og:title", content: t }, { property: "og:description", content: d },
         { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" },
+        ...(loaderData?.course.thumbnail.startsWith("https://") ? [{ property: "og:image", content: loaderData.course.thumbnail }, { name: "twitter:image", content: loaderData.course.thumbnail }] : []),
       ],
     };
   },
@@ -26,6 +28,8 @@ export const Route = createFileRoute("/courses/$courseId")({
 
 function Detail() {
   const { course } = Route.useLoaderData();
+  const { user, enrollments } = useAuth();
+  const enrolled = enrollments.some((e) => e.course_id === course.id);
   return (
     <Page>
       <Link to="/courses" className="inline-flex items-center gap-1 text-sm font-semibold text-navy"><ArrowLeft className="h-4 w-4" /> Back to courses</Link>
@@ -66,7 +70,7 @@ function Detail() {
             <p className="flex items-center gap-2 rounded-xl bg-muted p-3 text-sm text-muted-foreground"><Lock className="h-4 w-4" /> Access locked — sign in and purchase to unlock.</p>
           )}
           <div className="grid"><CourseAction course={course} /></div>
-          <p className="text-xs text-muted-foreground">Sign in to {course.price === 0 ? "start this free course" : "purchase securely"}. Access unlocks only after confirmed payment.</p>
+          <p className="text-xs text-muted-foreground">{enrolled ? "You're enrolled. Lessons will appear here when course content is published." : course.price === 0 ? user ? "Save this free course to My Learning. Lessons are not published yet." : "Sign in to enrol in this free course." : "Purchases are not available yet. Paid access requires confirmed payment."}</p>
         </aside>
       </div>
     </Page>

@@ -1,4 +1,6 @@
-import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "@tanstack/react-router";
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
@@ -12,6 +14,7 @@ type AuthState = {
   user: User | null;
   profile: Profile | null;
   enrollments: Enrollment[];
+  error: string;
   refresh: () => Promise<void>;
   signOut: () => Promise<void>;
 };
@@ -19,12 +22,18 @@ type AuthState = {
 const Ctx = createContext<AuthState | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  const generation = useRef(0);
   const [ready, setReady] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
+  const [error, setError] = useState("");
 
   const load = useCallback(async (s: Session | null) => {
+    const current = ++generation.current;
+    setError("");
     if (!s) {
       setProfile(null);
       setEnrollments([]);
@@ -32,8 +41,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
     const [p, e] = await Promise.all([
       supabase.from("profiles").select("*").eq("id", s.user.id).maybeSingle(),
-      supabase.from("enrollments").select("*").order("last_accessed_at", { ascending: false }),
+      supabase.from("enrollments").select("*").eq("user_id", s.user.id).order("last_accessed_at", { ascending: false }),
     ]);
+    if (current !== generation.current) return;
+    if (p.error || e.error) setError("Couldn't load your learning account. Please try again.");
     setProfile(p.data ?? null);
     setEnrollments(e.data ?? []);
   }, []);
@@ -42,12 +53,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { data } = supabase.auth.onAuthStateChange((event, s) => {
       setSession(s);
       if (event === "SIGNED_IN" || event === "SIGNED_OUT" || event === "USER_UPDATED" || event === "INITIAL_SESSION") {
+        if (event === "SIGNED_OUT") {
+          generation.current++;
+          setProfile(null);
+          setEnrollments([]);
+        }
         // defer DB calls out of the auth callback
-        setTimeout(() => void load(s).finally(() => setReady(true)), 0);
+        setTimeout(() => {
+          void load(s).finally(() => setReady(true));
+          if (event !== "INITIAL_SESSION") {
+            void router.invalidate();
+            if (event !== "SIGNED_OUT") void queryClient.invalidateQueries();
+          }
+        }, 0);
       }
     });
     return () => data.subscription.unsubscribe();
-  }, [load]);
+  }, [load, router, queryClient]);
 
   const value: AuthState = {
     ready,
@@ -55,9 +77,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     user: session?.user ?? null,
     profile,
     enrollments,
+    error,
     refresh: () => load(session),
     signOut: async () => {
-      await supabase.auth.signOut();
+      await queryClient.cancelQueries();
+      queryClient.clear();
+      const { error: signOutError } = await supabase.auth.signOut();
+      if (signOutError) throw signOutError;
+      generation.current++;
+      setProfile(null);
+      setEnrollments([]);
+      setSession(null);
+      await router.navigate({ to: "/login", replace: true });
     },
   };
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
@@ -74,5 +105,5 @@ export function displayName(profile: Profile | null, user: User | null) {
 }
 
 export function initials(name: string) {
-  return name.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]!.toUpperCase()).join("") || "L";
+  return name.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w.charAt(0).toUpperCase()).join("") || "L";
 }

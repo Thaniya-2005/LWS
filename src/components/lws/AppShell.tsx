@@ -1,11 +1,12 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import {
   Bell, BookOpen, Compass, CalendarHeart, Home, Sparkles, Users, LifeBuoy,
-  CreditCard, User, Settings, LogIn, Search, PanelLeftClose, PanelLeftOpen, MessagesSquare,
+  CreditCard, User, Settings, LogIn, LogOut, Search, PanelLeftClose, PanelLeftOpen, MessagesSquare,
 } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { Logo } from "./Logo";
 import { Button } from "@/components/ui/button";
+import { displayName, initials, useAuth } from "@/hooks/use-auth";
 
 type Item = { to: string; label: string; icon: typeof Home; soon?: boolean };
 
@@ -50,6 +51,8 @@ function isActive(path: string, to: string) {
 }
 
 export function AppShell({ children }: { children: ReactNode }) {
+  const { user, profile, ready, signOut } = useAuth();
+  const [accountError, setAccountError] = useState("");
   const path = useRouterState({ select: (s) => s.location.pathname });
   const [collapsed, setCollapsed] = useState(false);
   const [q, setQ] = useState("");
@@ -95,15 +98,19 @@ export function AppShell({ children }: { children: ReactNode }) {
             <Button variant="ghost" size="icon" title="No notifications" aria-label="Notifications (none)">
               <Bell className="h-5 w-5" />
             </Button>
-            <Button asChild variant="ghost" className="h-auto p-0"><Link
+            {ready && user ? <>
+              <Button asChild variant="ghost" size="icon"><Link to="/profile" aria-label="Your profile" title={displayName(profile, user)}><span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary-soft text-accent-foreground text-xs font-bold">{initials(displayName(profile, user))}</span></Link></Button>
+              <Button variant="ghost" size="icon" title="Sign out" aria-label="Sign out" onClick={() => { void signOut().catch(() => setAccountError("Couldn't sign out. Please try again.")); }}><LogOut className="h-5 w-5" /></Button>
+            </> : <Button asChild variant="ghost" disabled={!ready} className="h-auto p-0"><Link
               to="/login"
               className="ml-1 inline-flex items-center gap-2 rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90"
             >
               <LogIn className="h-4 w-4" /> <span className="hidden sm:inline">Sign in</span>
-            </Link></Button>
+            </Link></Button>}
           </div>
         </div>
       </header>
+      {accountError && <p role="alert" className="px-4 py-2 text-sm text-destructive">{accountError}</p>}
 
       <div className="flex">
         {/* Sidebar tablet/desktop */}

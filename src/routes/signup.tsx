@@ -4,6 +4,7 @@ import { AuthLayout, Field } from "@/components/lws/AuthLayout";
 import { SocialAuth } from "@/components/lws/SocialAuth";
 import { seo } from "@/components/lws/Section";
 import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/signup")({
   head: () => seo("Create account — LWS", "Join LWS and start building your career skills."),
@@ -27,15 +28,18 @@ function Signup() {
     setErr(n);
     setMsg("");
     if (Object.keys(n).length) return;
+    const email = f["email"] ?? "";
+    const password = f["pw"] ?? "";
+    const fullName = f["name"]?.trim() ?? "";
     setBusy(true);
     const { error } = await supabase.auth.signUp({
-      email: f["email"]!,
-      password: f["pw"]!,
-      options: { emailRedirectTo: `${window.location.origin}/onboarding`, data: { full_name: f["name"]!.trim() } },
+      email,
+      password,
+      options: { emailRedirectTo: `${window.location.origin}/onboarding`, data: { full_name: fullName } },
     });
     setBusy(false);
     if (error) return setMsg(error.message);
-    setSent(f["email"]!);
+    setSent(email);
   };
   if (sent)
     return (
@@ -56,7 +60,7 @@ function Signup() {
           <input type="checkbox" name="terms" className="mt-1 accent-primary" /> I agree to the Terms and Privacy Policy
         </label>
         {err["terms"] && <p className="text-xs text-destructive">{err["terms"]}</p>}
-        <button disabled={busy} className="w-full rounded-lg bg-primary py-3 text-sm font-semibold text-primary-foreground disabled:opacity-60">{busy ? "Creating…" : "Create account"}</button>
+        <Button type="submit" disabled={busy} className="h-11 w-full">{busy ? "Creating…" : "Create account"}</Button>
         {msg && <p role="alert" className="rounded-lg bg-muted p-3 text-sm text-destructive">{msg}</p>}
       </form>
       <p className="mt-6 text-center text-sm text-muted-foreground">Already have an account? <Link to="/login" className="font-semibold text-primary">Sign in</Link></p>

@@ -1,7 +1,11 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
+import { useState } from "react";
 import { ArrowRight, BarChart3, Clock, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { type Course, formatPrice } from "@/lib/courses";
+import { useAuth } from "@/hooks/use-auth";
+import { enrollFreeCourse } from "@/lib/enrollments.functions";
 
 export function AccessBadge({ course }: { course: Course }) {
   const map = {
@@ -45,18 +49,25 @@ export function CourseCard({ course }: { course: Course }) {
 }
 
 export function CourseAction({ course }: { course: Course }) {
+  const { user, enrollments, ready, refresh } = useAuth();
+  const enroll = useServerFn(enrollFreeCourse);
+  const navigate = useNavigate();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
   const base = "inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold";
+  if (enrollments.some((e) => e.course_id === course.id)) {
+    return <Button asChild className={base}><Link to="/courses/$courseId" params={{ courseId: course.id }}>View Course <ArrowRight /></Link></Button>;
+  }
   if (course.access === "coming-soon")
     return <Button disabled className={`${base} cursor-not-allowed bg-muted text-muted-foreground`}>Coming Soon</Button>;
-  if (course.access === "locked")
-    return (
-      <Link to="/courses/$courseId" params={{ courseId: course.id }} className={`${base} bg-primary-soft text-accent-foreground`}>
-        <Lock className="h-4 w-4" /> Unlock
-      </Link>
-    );
+  if (course.access !== "free") return <Button disabled variant="secondary" className={base}><Lock className="h-4 w-4" /> Unavailable</Button>;
+  if (ready && user) return <div className="min-w-0"><Button disabled={busy} className={`${base} w-full`} onClick={async () => {
+    setBusy(true); setError("");
+    try { await enroll({ data: { courseId: course.id } }); await refresh(); await navigate({ to: "/my-learning" }); }
+    catch { setError("Couldn't enrol. Please try again."); }
+    finally { setBusy(false); }
+  }}>{busy ? "Enrolling…" : "Enroll Free"}<ArrowRight /></Button>{error && <p role="alert" className="mt-2 text-xs text-destructive">{error}</p>}</div>;
   return (
-    <Link to="/login" className={`${base} bg-primary text-primary-foreground hover:opacity-90`}>
-      {course.access === "free" ? "Start Course" : "Enroll"} <ArrowRight className="h-4 w-4" />
-    </Link>
+    <Button asChild className={base}><Link to="/login" search={{ course: course.id }}>Sign in <ArrowRight className="h-4 w-4" /></Link></Button>
   );
 }

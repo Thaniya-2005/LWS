@@ -15,6 +15,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AppShell } from "@/components/lws/AppShell";
 import { Splash } from "@/components/lws/Splash";
+import { AuthProvider } from "@/hooks/use-auth";
 
 function NotFoundComponent() {
   return (
@@ -97,7 +98,7 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
-const authPaths = ["/login", "/signup", "/forgot-password"];
+const authPaths = ["/login", "/signup", "/forgot-password", "/reset-password", "/onboarding"];
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
@@ -105,8 +106,10 @@ function RootComponent() {
   const bare = authPaths.includes(path);
   return (
     <QueryClientProvider client={queryClient}>
+      <AuthProvider>
       <Splash />
       {bare ? <Outlet /> : <AppShell><Outlet /></AppShell>}
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
