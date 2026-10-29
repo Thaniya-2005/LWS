@@ -6,13 +6,17 @@ import { SocialAuth } from "@/components/lws/SocialAuth";
 import { seo } from "@/components/lws/Section";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
+import { Button } from "@/components/ui/button";
+import { getCourse } from "@/lib/courses";
 
 export const Route = createFileRoute("/login")({
+  validateSearch: (search: Record<string, unknown>) => ({ course: typeof search["course"] === "string" && getCourse(search["course"]) ? search["course"] : undefined }),
   head: () => seo("Sign in — LWS", "Sign in to continue your LWS career learning journey."),
   component: Login,
 });
 
 function Login() {
+  const { course } = Route.useSearch();
   const [show, setShow] = useState(false);
   const [err, setErr] = useState<Record<string, string>>({});
   const [msg, setMsg] = useState("");
@@ -21,8 +25,14 @@ function Login() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (ready && user) navigate({ to: profile && !profile.onboarded ? "/onboarding" : "/", replace: true });
-  }, [ready, user, profile, navigate]);
+    if (!ready || !user) return;
+    if (course) sessionStorage.setItem("lws-enroll-course", course);
+    if (profile && !profile.onboarded) { void navigate({ to: "/onboarding", replace: true }); return; }
+    const intended = course || sessionStorage.getItem("lws-enroll-course");
+    sessionStorage.removeItem("lws-enroll-course");
+    if (intended && getCourse(intended)) void navigate({ to: "/courses/$courseId", params: { courseId: intended }, replace: true });
+    else void navigate({ to: "/", replace: true });
+  }, [ready, user, profile, navigate, course]);
 
   const submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -47,12 +57,12 @@ function Login() {
         <Field label="Email" name="id" type="email" autoComplete="email" error={err["id"]} />
         <div className="relative">
           <Field label="Password" name="pw" type={show ? "text" : "password"} autoComplete="current-password" error={err["pw"]} />
-          <button type="button" onClick={() => setShow((s) => !s)} className="absolute right-3 top-9 p-1 text-muted-foreground" aria-label={show ? "Hide password" : "Show password"}>
+          <Button variant="ghost" size="icon" type="button" onClick={() => setShow((s) => !s)} className="absolute right-2 top-7 text-muted-foreground" aria-label={show ? "Hide password" : "Show password"}>
             {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-          </button>
+          </Button>
         </div>
         <div className="text-right"><Link to="/forgot-password" className="text-sm font-semibold text-primary">Forgot password?</Link></div>
-        <button disabled={busy} className="w-full rounded-lg bg-primary py-3 text-sm font-semibold text-primary-foreground disabled:opacity-60">{busy ? "Signing in…" : "Sign in"}</button>
+        <Button disabled={busy} className="h-11 w-full">{busy ? "Signing in…" : "Sign in"}</Button>
         {msg && <p role="alert" className="rounded-lg bg-muted p-3 text-sm text-destructive">{msg}</p>}
       </form>
       <p className="mt-6 text-center text-sm text-muted-foreground">New to LWS? <Link to="/signup" className="font-semibold text-primary">Create an account</Link></p>
