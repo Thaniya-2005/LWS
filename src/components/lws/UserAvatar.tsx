@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { getAvatar, getTheme, nameInitials } from "@/lib/avatars";
 
-export function UserAvatar({ name, avatarId, theme, size = 36, className = "" }: { name: string; avatarId?: string | null; theme?: string | null; size?: number; className?: string }) {
+export function UserAvatar({ name, avatarId, theme, size = 36, className = "" }: { name: string; avatarId?: string | null | undefined; theme?: string | null | undefined; size?: number; className?: string }) {
   const [broken, setBroken] = useState(false);
   const a = getAvatar(avatarId);
   const style = { width: size, height: size, fontSize: size * 0.36 };

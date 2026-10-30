@@ -4,7 +4,7 @@ import { ChevronRight, LogIn, UserRound } from "lucide-react";
 import banner from "@/assets/profile-banner.jpg";
 import { Page, seo } from "@/components/lws/Section";
 import { accountLinks } from "@/components/lws/AppShell";
-import { displayName, initials, useAuth } from "@/hooks/use-auth";
+import { displayName, useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";

@@ -1,3 +1,4 @@
+import { nameInitials } from "@/lib/avatars";
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "@tanstack/react-router";
@@ -105,5 +106,5 @@ export function displayName(profile: Profile | null, user: User | null) {
 }
 
 export function initials(name: string) {
-  return name.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w.charAt(0).toUpperCase()).join("") || "L";
+  return nameInitials(name);
 }

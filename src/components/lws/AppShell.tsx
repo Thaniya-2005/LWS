@@ -7,7 +7,7 @@ import {
 import { useState, type ReactNode } from "react";
 import { Logo } from "./Logo";
 import { Button } from "@/components/ui/button";
-import { displayName, initials, useAuth } from "@/hooks/use-auth";
+import { displayName, useAuth } from "@/hooks/use-auth";
 
 type Item = { to: string; label: string; icon: typeof Home; soon?: boolean };
 

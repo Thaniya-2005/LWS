@@ -1,7 +1,7 @@
 import urls from "./avatar-urls.json";
 
 export type AvatarCategory = "illustrative" | "fun" | "cute" | "pets" | "ai" | "initials";
-export type Avatar = { id: string; name: string; category: AvatarCategory; group?: string; image: string; type: "image" };
+export type Avatar = { id: string; name: string; category: AvatarCategory; group?: string | undefined; image: string; type: "image" };
 
 const u = urls as Record<string, string>;
 const mk = (category: AvatarCategory, list: [string, string][], group?: string): Avatar[] =>
