@@ -45,6 +45,7 @@ function Onboarding() {
   const [level, setLevel] = useState<string[]>([]);
   const [err, setErr] = useState("");
   const [busy, setBusy] = useState(false);
+  const [avatar, setAvatar] = useState<AvatarChoice>(null);
 
   if (!ready) return <AuthLayout title="Loading…" sub=""><span /></AuthLayout>;
   if (!user)
