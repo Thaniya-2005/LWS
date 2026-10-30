@@ -15,6 +15,13 @@
       "when": 1793297891703,
       "tag": "0001_protect_enrollment_access",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793378664782,
+      "tag": "0002_profile_avatar",
+      "breakpoints": true
     }
   ]
 }

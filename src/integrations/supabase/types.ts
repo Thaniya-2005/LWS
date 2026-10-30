@@ -46,6 +46,8 @@ export type Database = {
       }
       profiles: {
         Row: {
+          avatar_id: string | null
+          avatar_theme: string | null
           career_interests: string[]
           created_at: string
           experience_level: string | null
@@ -57,6 +59,8 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          avatar_id?: string | null
+          avatar_theme?: string | null
           career_interests?: string[]
           created_at?: string
           experience_level?: string | null
@@ -68,6 +72,8 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          avatar_id?: string | null
+          avatar_theme?: string | null
           career_interests?: string[]
           created_at?: string
           experience_level?: string | null
