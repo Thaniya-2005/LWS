@@ -1,9 +1,10 @@
+import { UserAvatar } from "@/components/lws/UserAvatar";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ChevronRight, LogIn, UserRound } from "lucide-react";
 import banner from "@/assets/profile-banner.jpg";
 import { Page, seo } from "@/components/lws/Section";
 import { accountLinks } from "@/components/lws/AppShell";
-import { displayName, initials, useAuth } from "@/hooks/use-auth";
+import { displayName, useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -23,7 +24,7 @@ function Profile() {
       <section className="reference-banner">
         <img src={banner} alt="" className="banner-art" />
         <div className="banner-copy flex flex-col items-start gap-4">
-        <span className="flex h-20 w-20 items-center justify-center rounded-full bg-card shadow-card">{user ? <span className="text-2xl font-bold text-primary">{initials(displayName(profile, user))}</span> : <UserRound className="h-10 w-10 text-primary" />}</span>
+        <span className="flex h-20 w-20 items-center justify-center rounded-full bg-card shadow-card">{user ? <UserAvatar name={displayName(profile, user)} avatarId={profile?.avatar_id} theme={profile?.avatar_theme} size={80} /> : <UserRound className="h-10 w-10 text-primary" />}</span>
         <div className="flex-1">
           <h1 className="text-2xl font-extrabold">{user ? displayName(profile, user) : "Welcome to LWS"}</h1>
           <p className="text-sm text-muted-foreground">{user ? user.email : "Sign in to see your profile, learning stats and saved courses."}</p>

@@ -1,3 +1,4 @@
+import { UserAvatar } from "@/components/lws/UserAvatar";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import {
   Bell, BookOpen, Compass, CalendarHeart, Home, Sparkles, Users, LifeBuoy,
@@ -6,7 +7,7 @@ import {
 import { useState, type ReactNode } from "react";
 import { Logo } from "./Logo";
 import { Button } from "@/components/ui/button";
-import { displayName, initials, useAuth } from "@/hooks/use-auth";
+import { displayName, useAuth } from "@/hooks/use-auth";
 
 type Item = { to: string; label: string; icon: typeof Home; soon?: boolean };
 
@@ -99,7 +100,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               <Bell className="h-5 w-5" />
             </Button>
             {ready && user ? <>
-              <Button asChild variant="ghost" size="icon"><Link to="/profile" aria-label="Your profile" title={displayName(profile, user)}><span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary-soft text-accent-foreground text-xs font-bold">{initials(displayName(profile, user))}</span></Link></Button>
+              <Button asChild variant="ghost" size="icon"><Link to="/profile" aria-label="Your profile" title={displayName(profile, user)}><UserAvatar name={displayName(profile, user)} avatarId={profile?.avatar_id} theme={profile?.avatar_theme} size={36} /></Link></Button>
               <Button variant="ghost" size="icon" title="Sign out" aria-label="Sign out" onClick={() => { void signOut().catch(() => setAccountError("Couldn't sign out. Please try again.")); }}><LogOut className="h-5 w-5" /></Button>
             </> : <Button asChild variant="ghost" disabled={!ready} className="h-auto p-0"><Link
               to="/login"
