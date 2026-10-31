@@ -56,6 +56,8 @@ export type Database = {
           learning_goals: string[]
           onboarded: boolean
           phone: string | null
+          skills_other: string | null
+          skills_to_improve: string[]
           updated_at: string
         }
         Insert: {
@@ -69,6 +71,8 @@ export type Database = {
           learning_goals?: string[]
           onboarded?: boolean
           phone?: string | null
+          skills_other?: string | null
+          skills_to_improve?: string[]
           updated_at?: string
         }
         Update: {
@@ -82,6 +86,8 @@ export type Database = {
           learning_goals?: string[]
           onboarded?: boolean
           phone?: string | null
+          skills_other?: string | null
+          skills_to_improve?: string[]
           updated_at?: string
         }
         Relationships: []
