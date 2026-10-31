@@ -85,7 +85,7 @@ function Onboarding() {
       id: user.id, skills_to_improve: skills, skills_other: skills.includes("Other") ? other.trim() : null, career_interests: interests, learning_goals: g, experience_level: level[0] ?? null,
       avatar_id: choice?.id ?? null, avatar_theme: choice?.id === "initials" ? choice.theme ?? null : null,
       onboarded: true, updated_at: new Date().toISOString(),
-    });
+    } as never);
     if (error) { setBusy(false); return setErr("Couldn't save your answers. Please try again."); }
     await refresh();
     const intended = sessionStorage.getItem("lws-enroll-course");
