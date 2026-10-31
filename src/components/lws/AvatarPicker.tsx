@@ -41,7 +41,7 @@ export function AvatarPicker({ name, value, onChange }: { name: string; value: A
   const scroll = (d: number) => row.current?.scrollBy({ left: d * 160, behavior: "smooth" });
   const pick = (id: AvatarCategory) => {
     setCat(id);
-    row.current?.querySelector(`[data-cat="${id}"]`)?.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
+    row.current?.querySelector(`[data-cat="${id}"]`)?.scrollIntoView?.({ inline: "center", block: "nearest", behavior: "smooth" });
   };
   const ini = nameInitials(name);
   const current = avatarCategories.find((c) => c.id === cat)!;

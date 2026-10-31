@@ -4,7 +4,8 @@ import { ArrowLeft, Check } from "lucide-react";
 import { AvatarPicker } from "@/components/lws/AvatarPicker";
 import { choiceLabel, type AvatarChoice } from "@/lib/avatars";
 
-const stepNames = ["Create Account", "Welcome", "Your Interests", "Your Goals", "About You", "Choose Your Profile"];
+const stepNames = ["Create Account", "Skills to Improve", "Your Goals", "About You", "Your Interests", "Choose Your Profile"];
+export const skillOptions = ["Resume Preparation", "Personal Interview Skills", "Group Discussion Skills", "Communication Skills", "Professional Confidence", "Other"];
 import { AuthLayout } from "@/components/lws/AuthLayout";
 import { seo } from "@/components/lws/Section";
 import { Button } from "@/components/ui/button";
@@ -45,6 +46,8 @@ function Onboarding() {
   const [level, setLevel] = useState<string[]>([]);
   const [err, setErr] = useState("");
   const [busy, setBusy] = useState(false);
+  const [skills, setSkills] = useState<string[]>([]);
+  const [other, setOther] = useState("");
   const [avatar, setAvatar] = useState<AvatarChoice>(null);
 
   if (!ready) return <AuthLayout title="Loading…" sub=""><span /></AuthLayout>;
@@ -56,10 +59,18 @@ function Onboarding() {
     );
 
   const steps = [
-    { t: `Welcome, ${displayName(profile, user)}!`, s: "Let's personalise LWS for you. It takes under a minute.", body: null, ok: true },
-    { t: "What are you interested in?", s: "Pick one or more career areas.", body: <Chips multi options={categories.map((c) => c.name)} value={interests} onChange={setInterests} />, ok: interests.length > 0 },
+    { t: "Which skills do you want to improve?", s: "Pick one or more.", body: (
+      <div className="space-y-3">
+        <Chips multi options={skillOptions} value={skills} onChange={setSkills} />
+        {skills.includes("Other") && (
+          <input aria-label="Other skill" placeholder="Tell us the skill" maxLength={100} value={other} onChange={(e) => setOther(e.target.value)}
+            className="h-11 w-full rounded-lg border border-border bg-card px-3 text-sm" />
+        )}
+      </div>
+    ), ok: skills.length > 0 && (!skills.includes("Other") || other.trim().length > 0) },
     { t: "What are your learning goals?", s: "Pick all that apply.", body: <Chips multi options={goals} value={g} onChange={setG} />, ok: g.length > 0 },
     { t: "Where are you right now?", s: "Choose the option that fits best.", body: <Chips multi={false} options={levels} value={level} onChange={setLevel} />, ok: level.length > 0 },
+    { t: "What are you interested in?", s: "Pick one or more career areas.", body: <Chips multi options={categories.map((c) => c.name)} value={interests} onChange={setInterests} />, ok: interests.length > 0 },
     { t: "Choose Your Avatar", s: "Pick an avatar that feels like you. (Tap to select or unselect)", body: <AvatarPicker name={displayName(profile, user)} value={avatar} onChange={setAvatar} />, ok: true },
   ];
   const cur = steps[step];
@@ -71,10 +82,10 @@ function Onboarding() {
     if (busy) return;
     setBusy(true); setErr("");
     const { error } = await supabase.from("profiles").upsert({
-      id: user.id, career_interests: interests, learning_goals: g, experience_level: level[0] ?? null,
+      id: user.id, skills_to_improve: skills, skills_other: skills.includes("Other") ? other.trim() : null, career_interests: interests, learning_goals: g, experience_level: level[0] ?? null,
       avatar_id: choice?.id ?? null, avatar_theme: choice?.id === "initials" ? choice.theme ?? null : null,
       onboarded: true, updated_at: new Date().toISOString(),
-    });
+    } as never);
     if (error) { setBusy(false); return setErr("Couldn't save your answers. Please try again."); }
     await refresh();
     const intended = sessionStorage.getItem("lws-enroll-course");
