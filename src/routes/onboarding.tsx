@@ -4,7 +4,8 @@ import { ArrowLeft, Check } from "lucide-react";
 import { AvatarPicker } from "@/components/lws/AvatarPicker";
 import { choiceLabel, type AvatarChoice } from "@/lib/avatars";
 
-const stepNames = ["Create Account", "Welcome", "Your Interests", "Your Goals", "About You", "Choose Your Profile"];
+const stepNames = ["Create Account", "Skills to Improve", "Your Goals", "About You", "Your Interests", "Choose Your Profile"];
+export const skillOptions = ["Resume Preparation", "Personal Interview Skills", "Group Discussion Skills", "Communication Skills", "Professional Confidence", "Other"];
 import { AuthLayout } from "@/components/lws/AuthLayout";
 import { seo } from "@/components/lws/Section";
 import { Button } from "@/components/ui/button";
@@ -45,6 +46,8 @@ function Onboarding() {
   const [level, setLevel] = useState<string[]>([]);
   const [err, setErr] = useState("");
   const [busy, setBusy] = useState(false);
+  const [skills, setSkills] = useState<string[]>([]);
+  const [other, setOther] = useState("");
   const [avatar, setAvatar] = useState<AvatarChoice>(null);
 
   if (!ready) return <AuthLayout title="Loading…" sub=""><span /></AuthLayout>;
@@ -79,7 +82,7 @@ function Onboarding() {
     if (busy) return;
     setBusy(true); setErr("");
     const { error } = await supabase.from("profiles").upsert({
-      id: user.id, career_interests: interests, learning_goals: g, experience_level: level[0] ?? null,
+      id: user.id, skills_to_improve: skills, skills_other: skills.includes("Other") ? other.trim() : null, career_interests: interests, learning_goals: g, experience_level: level[0] ?? null,
       avatar_id: choice?.id ?? null, avatar_theme: choice?.id === "initials" ? choice.theme ?? null : null,
       onboarded: true, updated_at: new Date().toISOString(),
     });
