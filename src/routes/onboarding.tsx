@@ -56,10 +56,18 @@ function Onboarding() {
     );
 
   const steps = [
-    { t: `Welcome, ${displayName(profile, user)}!`, s: "Let's personalise LWS for you. It takes under a minute.", body: null, ok: true },
-    { t: "What are you interested in?", s: "Pick one or more career areas.", body: <Chips multi options={categories.map((c) => c.name)} value={interests} onChange={setInterests} />, ok: interests.length > 0 },
+    { t: "Which skills do you want to improve?", s: "Pick one or more.", body: (
+      <div className="space-y-3">
+        <Chips multi options={skillOptions} value={skills} onChange={setSkills} />
+        {skills.includes("Other") && (
+          <input aria-label="Other skill" placeholder="Tell us the skill" maxLength={100} value={other} onChange={(e) => setOther(e.target.value)}
+            className="h-11 w-full rounded-lg border border-border bg-card px-3 text-sm" />
+        )}
+      </div>
+    ), ok: skills.length > 0 && (!skills.includes("Other") || other.trim().length > 0) },
     { t: "What are your learning goals?", s: "Pick all that apply.", body: <Chips multi options={goals} value={g} onChange={setG} />, ok: g.length > 0 },
     { t: "Where are you right now?", s: "Choose the option that fits best.", body: <Chips multi={false} options={levels} value={level} onChange={setLevel} />, ok: level.length > 0 },
+    { t: "What are you interested in?", s: "Pick one or more career areas.", body: <Chips multi options={categories.map((c) => c.name)} value={interests} onChange={setInterests} />, ok: interests.length > 0 },
     { t: "Choose Your Avatar", s: "Pick an avatar that feels like you. (Tap to select or unselect)", body: <AvatarPicker name={displayName(profile, user)} value={avatar} onChange={setAvatar} />, ok: true },
   ];
   const cur = steps[step];
