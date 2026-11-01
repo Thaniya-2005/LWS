@@ -16,6 +16,8 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AppShell } from "@/components/lws/AppShell";
 import { Splash } from "@/components/lws/Splash";
 import { AuthProvider } from "@/hooks/use-auth";
+import { FrontendProfileProvider } from "@/hooks/use-profile";
+import { ThemeProvider, themeBootstrap } from "@/hooks/use-theme";
 
 function NotFoundComponent() {
   return (
@@ -86,8 +88,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: themeBootstrap }} />
         <HeadContent />
       </head>
       <body>
@@ -107,8 +110,10 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
+      <ThemeProvider><FrontendProfileProvider>
       <Splash />
       {bare ? <Outlet /> : <AppShell><Outlet /></AppShell>}
+      </FrontendProfileProvider></ThemeProvider>
       </AuthProvider>
     </QueryClientProvider>
   );

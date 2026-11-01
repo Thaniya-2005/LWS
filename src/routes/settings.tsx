@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Bell, Lock, Globe } from "lucide-react";
 import { Page, PageTitle, seo } from "@/components/lws/Section";
 import { Switch } from "@/components/ui/switch";
+import { AppearanceSelector } from "@/components/lws/AppearanceSelector";
 
 export const Route = createFileRoute("/settings")({
   head: () => seo("Settings — LWS", "Manage your LWS account, notifications and security."),
@@ -13,6 +14,7 @@ function Settings() {
     <Page>
       <PageTitle eyebrow="Settings" title="Customize your" accent="LWS experience" sub="Manage your account, notifications and security." />
       <div className="grid gap-6">
+        <section className="border-b pb-6"><h2 className="mb-4 text-xl font-bold">Appearance</h2><div className="max-w-xl"><AppearanceSelector /></div></section>
         <div className="rounded-lg border bg-card p-5">
           <h2 className="flex items-center gap-2 font-bold"><Bell className="h-5 w-5 text-primary" /> Notifications</h2>
           {["Course updates", "Counselling reminders", "Career opportunities"].map((n) => (
