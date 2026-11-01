@@ -1,4 +1,6 @@
 # Reference styling
+- [ ] Implement frontend-only profile editors, accurate completion and shared Light/Dark/Auto appearance.
+- [ ] Verify profile editing and appearance at all seven requested screen widths.
 - [x] Align shared header, navigation, typography and surfaces with the supplied mockups.
 - [x] Match Home, Courses, My Learning, Counselling, AI, Community and Profile layouts; retain honest unsigned-in states.
 - [x] Apply the same styling to subscriptions, settings, support, course details and account pages.
