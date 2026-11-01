@@ -37,15 +37,15 @@ export function profileCompletion(profile: LearnerProfile, email: string) {
 
 export function validateProfileSection(profile: LearnerProfile, section: ProfileSection): Record<string, string> {
   const errors: Record<string, string> = {};
-  if (section === "personal" && !profile.full_name.trim()) errors.full_name = "Enter your full name.";
+  if (section === "personal" && !profile.full_name.trim()) errors["full_name"] = "Enter your full name.";
   if (section === "skills") {
-    if (!profile.skills_to_improve.length) errors.skills_to_improve = "Select at least one skill.";
-    if (profile.skills_to_improve.includes("Other") && !profile.skills_other.trim()) errors.skills_other = "Tell us the other skill you want to improve.";
+    if (!profile.skills_to_improve.length) errors["skills_to_improve"] = "Select at least one skill.";
+    if (profile.skills_to_improve.includes("Other") && !profile.skills_other.trim()) errors["skills_other"] = "Tell us the other skill you want to improve.";
   }
-  if (section === "goals" && !profile.learning_goals.length) errors.learning_goals = "Select at least one learning goal.";
-  if (section === "experience" && !profile.experience_level) errors.experience_level = "Choose your experience level.";
-  if (section === "stage" && !profile.career_stage) errors.career_stage = "Choose your career stage.";
-  if (section === "interests" && !profile.career_interests.length) errors.career_interests = "Select at least one career interest.";
+  if (section === "goals" && !profile.learning_goals.length) errors["learning_goals"] = "Select at least one learning goal.";
+  if (section === "experience" && !profile.experience_level) errors["experience_level"] = "Choose your experience level.";
+  if (section === "stage" && !profile.career_stage) errors["career_stage"] = "Choose your career stage.";
+  if (section === "interests" && !profile.career_interests.length) errors["career_interests"] = "Select at least one career interest.";
   return errors;
 }
 
