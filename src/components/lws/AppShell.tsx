@@ -8,6 +8,7 @@ import { useState, type ReactNode } from "react";
 import { Logo } from "./Logo";
 import { Button } from "@/components/ui/button";
 import { displayName, useAuth } from "@/hooks/use-auth";
+import { useFrontendProfile } from "@/hooks/use-profile";
 
 type Item = { to: string; label: string; icon: typeof Home; soon?: boolean };
 
@@ -52,7 +53,8 @@ function isActive(path: string, to: string) {
 }
 
 export function AppShell({ children }: { children: ReactNode }) {
-  const { user, profile, ready, signOut } = useAuth();
+  const { user, ready, signOut } = useAuth();
+  const { profile } = useFrontendProfile();
   const [accountError, setAccountError] = useState("");
   const path = useRouterState({ select: (s) => s.location.pathname });
   const [collapsed, setCollapsed] = useState(false);
@@ -100,7 +102,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               <Bell className="h-5 w-5" />
             </Button>
             {ready && user ? <>
-              <Button asChild variant="ghost" size="icon"><Link to="/profile" aria-label="Your profile" title={displayName(profile, user)}><UserAvatar name={displayName(profile, user)} avatarId={profile?.avatar_id} theme={profile?.avatar_theme} size={36} /></Link></Button>
+              <Button asChild variant="ghost" size="icon"><Link to="/profile" aria-label="Your profile" title={profile.full_name || "Learner"}><UserAvatar name={profile.full_name || "Learner"} avatarId={profile.avatar_id} theme={profile.avatar_theme} size={36} /></Link></Button>
               <Button variant="ghost" size="icon" title="Sign out" aria-label="Sign out" onClick={() => { void signOut().catch(() => setAccountError("Couldn't sign out. Please try again.")); }}><LogOut className="h-5 w-5" /></Button>
             </> : <Button asChild variant="ghost" disabled={!ready} className="h-auto p-0"><Link
               to="/login"
