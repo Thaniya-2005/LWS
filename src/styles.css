@@ -95,6 +95,22 @@
   --shadow-lift: 0 12px 28px -12px rgb(212 160 23 / 0.35);
 }
 
+.dark {
+  --background: #12141A; --foreground: #ECEAE4; --card: #1B1E26; --card-foreground: #ECEAE4;
+  --popover: #1B1E26; --popover-foreground: #ECEAE4; --primary: #E0AE2C; --primary-foreground: #1A1A1A;
+  --primary-soft: #3A3018; --secondary: #2A2620; --secondary-foreground: #ECEAE4; --muted: #252832;
+  --muted-foreground: #A3A9B4; --accent: #3A3018; --accent-foreground: #F0C760; --destructive: #F26B6B;
+  --destructive-foreground: #FFFFFF; --success: #34D399; --success-soft: #133328; --cream: #2A2518; --navy: #ECEAE4;
+  --border: #2F333D; --input: #343944; --ring: #E0AE2C;
+  --cat-orange: oklch(0.32 0.05 70); --cat-violet: oklch(0.32 0.04 300); --cat-blue: oklch(0.32 0.04 240);
+  --cat-rose: oklch(0.32 0.04 10); --cat-green: oklch(0.32 0.05 150);
+  --sidebar: #171A21; --sidebar-foreground: #ECEAE4; --sidebar-primary: #E0AE2C; --sidebar-primary-foreground: #1A1A1A;
+  --sidebar-accent: #3A3018; --sidebar-accent-foreground: #F0C760; --sidebar-border: #2F333D; --sidebar-ring: #E0AE2C;
+  --gradient-hero: linear-gradient(110deg, #12141A 0%, #2A2518 100%);
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3), 0 4px 16px -6px rgb(0 0 0 / 0.5);
+}
+.dark .reference-banner > .banner-art { opacity: .22; }
+
 @layer base {
   * {
     border-color: var(--color-border);
