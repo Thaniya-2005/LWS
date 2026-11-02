@@ -96,9 +96,9 @@ function Profile() {
             <h2 className="text-lg font-bold">{completion === 100 ? "Your profile is complete" : "Complete your profile"}</h2>
             <p className="text-sm text-muted-foreground">{missing.length ? `Missing: ${missing.map((m) => m.label).join(", ")}` : "All required details are added. Avatar and About Me are optional."}</p>
           </div>
-          {missing.length > 0 && (missing[0].field === "email"
+          {missing.length > 0 && (missing[0]!.field === "email"
             ? <Button asChild variant="outline"><Link to="/login">Sign in again</Link></Button>
-            : <Button onClick={() => open(missing[0].section)}>Complete My Profile</Button>)}
+            : <Button onClick={() => open(missing[0]!.section)}>Complete My Profile</Button>)}
         </section>
         <section className="grid grid-cols-2 gap-4 rounded-lg border bg-card p-4">
           {enrollments.length ? <>
@@ -115,7 +115,7 @@ function Profile() {
             <Row s="experience" value={profile.experience_level} />
             <Row s="stage" value={profile.career_stage} />
             <Row s="interests" value={profile.career_interests.join(" · ")} />
-            <Row s="avatar" value={profile.avatar_id ? choiceLabel({ id: profile.avatar_id, theme: profile.avatar_theme ?? undefined }) : ""} />
+            <Row s="avatar" value={profile.avatar_id ? choiceLabel({ id: profile.avatar_id, ...(profile.avatar_theme ? { theme: profile.avatar_theme } : {}) }) : ""} />
           </div>
           {profile.about_me && <p className="mt-3 text-sm"><span className="font-semibold">About me:</span> {profile.about_me}</p>}
         </section>
@@ -155,7 +155,7 @@ function Profile() {
               {editing === "experience" && <><Single options={experienceOptions} value={draft.experience_level} onChange={(v) => set({ experience_level: v })} />{errors["experience_level"] && <p className="text-sm text-destructive">{errors["experience_level"]}</p>}</>}
               {editing === "stage" && <><Single options={stageOptions} value={draft.career_stage} onChange={(v) => set({ career_stage: v })} />{errors["career_stage"] && <p className="text-sm text-destructive">{errors["career_stage"]}</p>}</>}
               {editing === "interests" && <><Chips options={interestOptions} value={draft.career_interests} onChange={(v) => set({ career_interests: v })} />{errors["career_interests"] && <p className="text-sm text-destructive">{errors["career_interests"]}</p>}</>}
-              {editing === "avatar" && <AvatarPicker name={draft.full_name || "Learner"} value={draft.avatar_id ? { id: draft.avatar_id, theme: draft.avatar_theme ?? undefined } : null} onChange={(c) => set({ avatar_id: c?.id ?? null, avatar_theme: c?.theme ?? null })} />}
+              {editing === "avatar" && <AvatarPicker name={draft.full_name || "Learner"} value={draft.avatar_id ? { id: draft.avatar_id, ...(draft.avatar_theme ? { theme: draft.avatar_theme } : {}) } : null} onChange={(c) => set({ avatar_id: c?.id ?? null, avatar_theme: c?.theme ?? null })} />}
               {errors["form"] && <p role="alert" className="text-sm text-destructive">{errors["form"]}</p>}
               {confirmClose && <div role="alert" className="rounded-lg border border-primary bg-primary-soft p-3 text-sm">
                 <p>Discard your unsaved changes?</p>
