@@ -23,7 +23,7 @@ export const Route = createFileRoute("/profile")({
   component: Profile,
 });
 
-const interestOptions = categories.filter((c) => c !== "All");
+const interestOptions = categories.map((c) => c.name as string);
 const titles: Record<ProfileSection, string> = {
   personal: "Personal information", skills: "Skills to improve", goals: "Learning goals", experience: "Experience level",
   stage: "Career stage", interests: "Career interests", avatar: "Avatar",
