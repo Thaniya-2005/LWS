@@ -9,7 +9,9 @@
 - [x] Connect account context, onboarding, learner profile and saved enrolments.
 - [ ] Verify signed-in enrolment, reload and sign-out — waiting for a real account sign-in; no existing accounts can be used for testing.
 - [x] Add Career Launchpad (₹5,999) and Coming Soon rules.
-- [ ] Intro cards + demo accounts; legal pages + signup consent; tabbed profile settings.
+- [x] Intro cards, legal pages, signup consent.
+- [ ] Demo accounts — waiting on user decision (public passwords; paid demo needs real payment record).
+- [ ] Tabbed profile editing, password change, account deletion.
 - [ ] Enable paid checkout after provider approval and confirmed course prices.
 - [ ] Connect counselling after the booking service is supplied.
 - [ ] Publish learning content after actual lessons are supplied.
