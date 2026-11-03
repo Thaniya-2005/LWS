@@ -4,6 +4,7 @@ import linkedin from "@/assets/courses/linkedin.jpg.asset.json";
 import interview from "@/assets/courses/interview.jpg.asset.json";
 import jobSearch from "@/assets/courses/job-search.jpg.asset.json";
 import sideHustle from "@/assets/courses/side-hustle.jpg.asset.json";
+import launchpad from "@/assets/courses/career-launchpad.png.asset.json";
 import kickstart from "@/assets/courses/career-kickstart.jpg.asset.json";
 
 export type Category =
@@ -26,6 +27,7 @@ export type Course = {
   access: Access;
   thumbnail: string;
   outcomes: string[];
+  premium?: boolean;
 };
 
 export const categories: { name: Category; tone: string }[] = [
@@ -50,6 +52,19 @@ export const courses: Course[] = [
     outcomes: ["Discover your direction", "Build key skills", "Create a strong resume", "Get job-ready"],
   },
   {
+    id: "career-launchpad",
+    title: "Career Launchpad — Plan, Build, Grow & Get Hired",
+    category: "Career Development",
+    description: "A complete career programme covering career clarity, resume building, interview preparation and job search strategy.",
+    level: "Beginner",
+    duration: "Self-Paced",
+    price: 5999,
+    access: "paid",
+    premium: true,
+    thumbnail: launchpad.url,
+    outcomes: ["Career clarity", "Resume building", "Interview preparation", "Job search strategy"],
+  },
+  {
     id: "communication-skills",
     title: "Communication Skills for Career Growth",
     category: "Communication",
@@ -57,7 +72,7 @@ export const courses: Course[] = [
     level: "Beginner",
     duration: "Self-Paced",
     price: 1499,
-    access: "paid",
+    access: "coming-soon",
     thumbnail: communication.url,
     outcomes: ["Speak confidently", "Express clearly", "Build better connections"],
   },
@@ -69,7 +84,7 @@ export const courses: Course[] = [
     level: "Beginner",
     duration: "Self-Paced",
     price: 2499,
-    access: "paid",
+    access: "coming-soon",
     thumbnail: resume.url,
     outcomes: ["ATS-friendly formatting", "Industry-ready structure", "Get more interviews"],
   },
@@ -81,7 +96,7 @@ export const courses: Course[] = [
     level: "Beginner",
     duration: "Self-Paced",
     price: 2499,
-    access: "paid",
+    access: "coming-soon",
     thumbnail: linkedin.url,
     outcomes: ["Be visible", "Build credibility", "Create opportunities"],
   },
@@ -93,7 +108,7 @@ export const courses: Course[] = [
     level: "Intermediate",
     duration: "Self-Paced",
     price: 2999,
-    access: "paid",
+    access: "coming-soon",
     thumbnail: interview.url,
     outcomes: ["Answer confidently", "Handle tough questions", "Showcase your strengths"],
   },
@@ -105,7 +120,7 @@ export const courses: Course[] = [
     level: "Beginner",
     duration: "Self-Paced",
     price: 1999,
-    access: "locked",
+    access: "coming-soon",
     thumbnail: jobSearch.url,
     outcomes: ["Find the right opportunities", "Leverage networking", "Ace interviews"],
   },

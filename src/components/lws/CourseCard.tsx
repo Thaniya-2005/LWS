@@ -24,7 +24,7 @@ export function CourseCard({ course }: { course: Course }) {
     <article className={`group flex flex-col overflow-hidden rounded-lg border bg-card shadow-card transition hover:-translate-y-0.5 hover:shadow-lift ${soon ? "opacity-80" : ""}`}>
       <Link to="/courses/$courseId" params={{ courseId: course.id }} className="relative block aspect-video overflow-hidden bg-muted">
         <img src={course.thumbnail} alt={course.title} loading="lazy" className="h-full w-full object-contain transition duration-500 group-hover:scale-[1.03]" />
-        <div className="absolute left-3 top-3"><AccessBadge course={course} /></div>
+        <div className="absolute left-3 top-3 flex gap-1.5"><AccessBadge course={course} />{course.premium && <span className="rounded-full bg-primary px-2.5 py-1 text-[11px] font-semibold text-primary-foreground">Premium</span>}</div>
       </Link>
       <div className="flex flex-1 flex-col gap-2 p-4">
         <span className="text-[11px] font-semibold uppercase tracking-wide text-accent-foreground">{course.category}</span>
@@ -60,7 +60,7 @@ export function CourseAction({ course }: { course: Course }) {
   }
   if (course.access === "coming-soon")
     return <Button disabled className={`${base} cursor-not-allowed bg-muted text-muted-foreground`}>Coming Soon</Button>;
-  if (course.access !== "free") return <Button disabled variant="secondary" className={base}><Lock className="h-4 w-4" /> Unavailable</Button>;
+  if (course.access !== "free") return <Button disabled variant="secondary" className={base}><Lock className="h-4 w-4" /> Payment opening soon</Button>;
   if (ready && user) return <div className="min-w-0"><Button disabled={busy} className={`${base} w-full`} onClick={async () => {
     setBusy(true); setError("");
     try { await enroll({ data: { courseId: course.id } }); await refresh(); await navigate({ to: "/my-learning" }); }
