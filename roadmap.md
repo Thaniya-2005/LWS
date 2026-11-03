@@ -8,6 +8,8 @@
 - [x] Review the product development brief.
 - [x] Connect account context, onboarding, learner profile and saved enrolments.
 - [ ] Verify signed-in enrolment, reload and sign-out — waiting for a real account sign-in; no existing accounts can be used for testing.
+- [x] Add Career Launchpad (₹5,999) and Coming Soon rules.
+- [ ] Intro cards + demo accounts; legal pages + signup consent; tabbed profile settings.
 - [ ] Enable paid checkout after provider approval and confirmed course prices.
 - [ ] Connect counselling after the booking service is supplied.
 - [ ] Publish learning content after actual lessons are supplied.
