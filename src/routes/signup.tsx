@@ -57,7 +57,7 @@ function Signup() {
         <Field label="Password" name="pw" type="password" autoComplete="new-password" error={err["pw"]} />
         <Field label="Confirm password" name="pw2" type="password" autoComplete="new-password" error={err["pw2"]} />
         <label className="flex items-start gap-2 text-sm text-muted-foreground">
-          <input type="checkbox" name="terms" className="mt-1 accent-primary" /> I agree to the Terms and Privacy Policy
+          <input type="checkbox" name="terms" className="mt-1 accent-primary" /> <span>I agree to the <Link to="/terms" target="_blank" className="font-semibold text-primary underline">Terms & Conditions</Link> and <Link to="/privacy" target="_blank" className="font-semibold text-primary underline">Privacy Policy</Link>.</span>
         </label>
         {err["terms"] && <p className="text-xs text-destructive">{err["terms"]}</p>}
         <Button type="submit" disabled={busy} className="h-11 w-full">{busy ? "Creating…" : "Create account"}</Button>

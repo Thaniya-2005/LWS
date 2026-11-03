@@ -1,5 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Bell, Lock, Globe } from "lucide-react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Bell, Lock, Globe, FileText } from "lucide-react";
 import { Page, PageTitle, seo } from "@/components/lws/Section";
 import { Switch } from "@/components/ui/switch";
 import { AppearanceSelector } from "@/components/lws/AppearanceSelector";
@@ -26,6 +26,11 @@ function Settings() {
           <p className="mt-3 text-sm text-muted-foreground">Password and account options will be available after you sign in.</p>
           <h2 className="mt-5 flex items-center gap-2 font-bold"><Globe className="h-5 w-5 text-primary" /> Language</h2>
           <p className="mt-2 text-sm text-muted-foreground">English</p>
+        </div>
+        <div className="rounded-lg border bg-card p-5">
+          <h2 className="flex items-center gap-2 font-bold"><FileText className="h-5 w-5 text-primary" /> Legal & Policies</h2>
+          <Link to="/terms" className="block border-b py-4 text-sm font-semibold">Terms & Conditions</Link>
+          <Link to="/privacy" className="block py-4 text-sm font-semibold">Privacy Policy</Link>
         </div>
       </div>
     </Page>
