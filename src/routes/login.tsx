@@ -30,6 +30,9 @@ function Login() {
     if (profile && !profile.onboarded) { void navigate({ to: "/onboarding", replace: true }); return; }
     const intended = course || sessionStorage.getItem("lws-enroll-course");
     sessionStorage.removeItem("lws-enroll-course");
+    const plan = Number(sessionStorage.getItem("lws-counselling-plan"));
+    sessionStorage.removeItem("lws-counselling-plan");
+    if (!intended && [30, 45, 60].includes(plan)) { void navigate({ to: "/counselling/book", search: { plan }, replace: true }); return; }
     if (intended && getCourse(intended)) void navigate({ to: "/courses/$courseId", params: { courseId: intended }, replace: true });
     else void navigate({ to: "/", replace: true });
   }, [ready, user, profile, navigate, course]);
