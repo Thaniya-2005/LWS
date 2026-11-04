@@ -25,6 +25,7 @@ import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as SubscriptionsRouteImport } from './routes/subscriptions'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as CounsellingBookRouteImport } from './routes/counselling_.book'
 import { Route as CoursesIndexRouteImport } from './routes/courses.index'
 import { Route as CoursesCourseIdRouteImport } from './routes/courses.$courseId'
 
@@ -108,6 +109,11 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CounsellingBookRoute = CounsellingBookRouteImport.update({
+  id: '/counselling_/book',
+  path: '/counselling/book',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CoursesIndexRoute = CoursesIndexRouteImport.update({
   id: '/courses/',
   path: '/courses/',
@@ -136,6 +142,7 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/subscriptions': typeof SubscriptionsRoute
   '/terms': typeof TermsRoute
+  '/counselling/book': typeof CounsellingBookRoute
   '/courses/$courseId': typeof CoursesCourseIdRoute
   '/courses/': typeof CoursesIndexRoute
 }
@@ -156,6 +163,7 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/subscriptions': typeof SubscriptionsRoute
   '/terms': typeof TermsRoute
+  '/counselling/book': typeof CounsellingBookRoute
   '/courses/$courseId': typeof CoursesCourseIdRoute
   '/courses': typeof CoursesIndexRoute
 }
@@ -177,6 +185,7 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/subscriptions': typeof SubscriptionsRoute
   '/terms': typeof TermsRoute
+  '/counselling_/book': typeof CounsellingBookRoute
   '/courses/$courseId': typeof CoursesCourseIdRoute
   '/courses/': typeof CoursesIndexRoute
 }
@@ -199,6 +208,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/subscriptions'
     | '/terms'
+    | '/counselling/book'
     | '/courses/$courseId'
     | '/courses/'
   fileRoutesByTo: FileRoutesByTo
@@ -219,6 +229,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/subscriptions'
     | '/terms'
+    | '/counselling/book'
     | '/courses/$courseId'
     | '/courses'
   id:
@@ -239,6 +250,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/subscriptions'
     | '/terms'
+    | '/counselling_/book'
     | '/courses/$courseId'
     | '/courses/'
   fileRoutesById: FileRoutesById
@@ -260,6 +272,7 @@ export interface RootRouteChildren {
   SignupRoute: typeof SignupRoute
   SubscriptionsRoute: typeof SubscriptionsRoute
   TermsRoute: typeof TermsRoute
+  CounsellingBookRoute: typeof CounsellingBookRoute
   CoursesCourseIdRoute: typeof CoursesCourseIdRoute
   CoursesIndexRoute: typeof CoursesIndexRoute
 }
@@ -378,6 +391,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/counselling_/book': {
+      id: '/counselling_/book'
+      path: '/counselling/book'
+      fullPath: '/counselling/book'
+      preLoaderRoute: typeof CounsellingBookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/courses/': {
       id: '/courses/'
       path: '/courses'
@@ -412,6 +432,7 @@ const rootRouteChildren: RootRouteChildren = {
   SignupRoute: SignupRoute,
   SubscriptionsRoute: SubscriptionsRoute,
   TermsRoute: TermsRoute,
+  CounsellingBookRoute: CounsellingBookRoute,
   CoursesCourseIdRoute: CoursesCourseIdRoute,
   CoursesIndexRoute: CoursesIndexRoute,
 }
