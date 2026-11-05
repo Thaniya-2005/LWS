@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import { AuthLayout, Field } from "@/components/lws/AuthLayout";
 import { SocialAuth } from "@/components/lws/SocialAuth";
-import { ConsentDialog, POLICY_VERSION } from "@/components/lws/ConsentDialog";
+import { ConsentDialog, POLICY_VERSION, type LegalTab } from "@/components/lws/ConsentDialog";
 import { seo } from "@/components/lws/Section";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -21,6 +21,7 @@ function Signup() {
   const [busy, setBusy] = useState(false);
   const [pending, setPending] = useState<Pending | null>(null);
   const inFlight = useRef(false);
+  const [reading, setReading] = useState<LegalTab | null>(null);
 
   const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -72,12 +73,13 @@ function Signup() {
         <Field label="Password" name="pw" type="password" autoComplete="new-password" error={err["pw"]} />
         <Field label="Confirm password" name="pw2" type="password" autoComplete="new-password" error={err["pw2"]} />
         <p className="text-xs text-muted-foreground">You'll review and accept our{" "}
-          <a href="/terms" target="_blank" rel="noopener noreferrer" className="font-semibold text-primary underline underline-offset-2">Terms & Conditions</a> and{" "}
-          <a href="/privacy" target="_blank" rel="noopener noreferrer" className="font-semibold text-primary underline underline-offset-2">Privacy Policy</a> before your account is created.</p>
+          <button type="button" onClick={() => setReading("terms")} className="font-semibold text-primary underline underline-offset-2">Terms & Conditions</button> and{" "}
+          <button type="button" onClick={() => setReading("privacy")} className="font-semibold text-primary underline underline-offset-2">Privacy Policy</button> before your account is created.</p>
         <Button type="submit" disabled={busy} className="h-11 w-full">{busy ? "Creating…" : "Create account"}</Button>
         {msg && <p role="alert" className="rounded-lg bg-muted p-3 text-sm text-destructive">{msg}</p>}
       </form>
       <p className="mt-6 text-center text-sm text-muted-foreground">Already have an account? <Link to="/login" className="font-semibold text-primary">Sign in</Link></p>
+      <ConsentDialog open={!!reading} mode="read" initialTab={reading ?? "terms"} onBack={() => setReading(null)} />
       <ConsentDialog open={!!pending} busy={busy} onAccept={accept} onBack={() => setPending(null)} onDecline={() => { setPending(null); setMsg("You need to accept both policies to create an account."); }} />
     </AuthLayout>
   );
