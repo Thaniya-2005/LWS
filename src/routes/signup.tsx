@@ -22,6 +22,8 @@ function Signup() {
   const [pending, setPending] = useState<Pending | null>(null);
   const inFlight = useRef(false);
   const [reading, setReading] = useState<LegalTab | null>(null);
+  const [consentStep, setConsentStep] = useState<LegalTab>("terms");
+  const decline = () => { setPending(null); setMsg("You need to accept both policies to create an account."); };
 
   const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -34,6 +36,7 @@ function Signup() {
     setErr(n);
     setMsg("");
     if (Object.keys(n).length) return;
+    setConsentStep("terms");
     setPending({ email: f["email"] ?? "", password: f["pw"] ?? "", fullName: f["name"]?.trim() ?? "" });
   };
 
@@ -79,8 +82,12 @@ function Signup() {
         {msg && <p role="alert" className="rounded-lg bg-muted p-3 text-sm text-destructive">{msg}</p>}
       </form>
       <p className="mt-6 text-center text-sm text-muted-foreground">Already have an account? <Link to="/login" className="font-semibold text-primary">Sign in</Link></p>
-      <ConsentDialog open={!!reading} mode="read" initialTab={reading ?? "terms"} onBack={() => setReading(null)} />
-      <ConsentDialog open={!!pending} busy={busy} onAccept={accept} onBack={() => setPending(null)} onDecline={() => { setPending(null); setMsg("You need to accept both policies to create an account."); }} />
+      <ConsentDialog open={reading === "terms"} doc="terms" onBack={() => setReading(null)} />
+      <ConsentDialog open={reading === "privacy"} doc="privacy" onBack={() => setReading(null)} />
+      <ConsentDialog open={!!pending && consentStep === "terms"} doc="terms" mode="consent" step="Step 1 of 2" acceptLabel="Accept & continue"
+        onAccept={() => setConsentStep("privacy")} onBack={() => setPending(null)} onDecline={decline} />
+      <ConsentDialog open={!!pending && consentStep === "privacy"} doc="privacy" mode="consent" step="Step 2 of 2" busy={busy}
+        onAccept={accept} onBack={() => setConsentStep("terms")} onDecline={decline} />
     </AuthLayout>
   );
 }
