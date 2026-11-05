@@ -76,7 +76,7 @@ function Signup() {
         {msg && <p role="alert" className="rounded-lg bg-muted p-3 text-sm text-destructive">{msg}</p>}
       </form>
       <p className="mt-6 text-center text-sm text-muted-foreground">Already have an account? <Link to="/login" className="font-semibold text-primary">Sign in</Link></p>
-      <ConsentDialog open={!!pending} busy={busy} onAccept={accept} onDecline={() => { setPending(null); setMsg("You need to accept both policies to create an account."); }} />
+      <ConsentDialog open={!!pending} busy={busy} onAccept={accept} onBack={() => setPending(null)} onDecline={() => { setPending(null); setMsg("You need to accept both policies to create an account."); }} />
     </AuthLayout>
   );
 }

@@ -6,10 +6,10 @@ import { privacy, terms } from "@/lib/legal";
 
 export const POLICY_VERSION = "2026-11";
 
-export function ConsentDialog({ open, busy, onAccept, onDecline }: { open: boolean; busy: boolean; onAccept: () => void; onDecline: () => void }) {
+export function ConsentDialog({ open, busy, onAccept, onDecline, onBack }: { open: boolean; busy: boolean; onAccept: () => void; onDecline: () => void; onBack: () => void }) {
   const [tab, setTab] = useState<"terms" | "privacy">("terms");
   return (
-    <Dialog open={open} onOpenChange={(o) => { if (!o && !busy) onDecline(); }}>
+    <Dialog open={open} onOpenChange={(o) => { if (!o && !busy) onBack(); }}>
       <DialogContent className="flex max-h-[90dvh] w-[calc(100vw-1.5rem)] max-w-2xl flex-col gap-0 overflow-hidden p-0">
         <DialogHeader className="border-b p-5 text-left">
           <DialogTitle className="font-display text-xl">Data Privacy & Legal Consent</DialogTitle>
@@ -27,6 +27,7 @@ export function ConsentDialog({ open, busy, onAccept, onDecline }: { open: boole
           <LegalBody doc={tab === "terms" ? terms : privacy} />
         </div>
         <div className="flex flex-col-reverse gap-2 border-t bg-card p-4 sm:flex-row sm:justify-end">
+          <Button variant="ghost" onClick={onBack} disabled={busy}>Back</Button>
           <Button variant="outline" onClick={onDecline} disabled={busy}>Decline</Button>
           <Button onClick={onAccept} disabled={busy}>{busy ? "Creating account…" : "Accept & create account"}</Button>
         </div>
