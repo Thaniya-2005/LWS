@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Briefcase, Compass, GraduationCap, HeartHandshake } from "lucide-react";
 import logo from "@/assets/lws-logo.png.asset.json";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "@tanstack/react-router";
+import { useAuth } from "@/hooks/use-auth";
 
 const cards = [
   { icon: Compass, h: "Build Your Career", d: "Discover your strengths, explore career opportunities and take the first step towards building a successful professional future." },
@@ -14,14 +16,22 @@ const INTRO_KEY = "has_seen_intro";
 export function Splash() {
   const [stage, setStage] = useState<"none" | "logo" | "intro">("none");
   const [i, setI] = useState(0);
+  const navigate = useNavigate();
+  const { ready, user } = useAuth();
   useEffect(() => {
-    if (sessionStorage.getItem("lws-splash")) return;
+    const seen = !!localStorage.getItem(INTRO_KEY);
+    // Logo plays once per browser session; new visitors always continue into the four cards.
+    if (seen && sessionStorage.getItem("lws-splash")) return;
     sessionStorage.setItem("lws-splash", "1");
     setStage("logo");
-    const t = setTimeout(() => setStage(localStorage.getItem(INTRO_KEY) ? "none" : "intro"), 1400);
+    const t = setTimeout(() => setStage(seen ? "none" : "intro"), 1400);
     return () => clearTimeout(t);
   }, []);
-  const finish = () => { localStorage.setItem(INTRO_KEY, "1"); setStage("none"); };
+  const finish = () => {
+    localStorage.setItem(INTRO_KEY, "1");
+    setStage("none");
+    if (!ready || !user) void navigate({ to: "/login" });
+  };
   if (stage === "none") return null;
   if (stage === "logo")
     return (
