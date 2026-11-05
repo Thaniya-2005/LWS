@@ -71,7 +71,9 @@ function Signup() {
         <Field label="Email" name="email" type="email" autoComplete="email" error={err["email"]} />
         <Field label="Password" name="pw" type="password" autoComplete="new-password" error={err["pw"]} />
         <Field label="Confirm password" name="pw2" type="password" autoComplete="new-password" error={err["pw2"]} />
-        <p className="text-xs text-muted-foreground">You'll review and accept our Terms & Conditions and Privacy Policy before your account is created.</p>
+        <p className="text-xs text-muted-foreground">You'll review and accept our{" "}
+          <a href="/terms" target="_blank" rel="noopener noreferrer" className="font-semibold text-primary underline underline-offset-2">Terms & Conditions</a> and{" "}
+          <a href="/privacy" target="_blank" rel="noopener noreferrer" className="font-semibold text-primary underline underline-offset-2">Privacy Policy</a> before your account is created.</p>
         <Button type="submit" disabled={busy} className="h-11 w-full">{busy ? "Creating…" : "Create account"}</Button>
         {msg && <p role="alert" className="rounded-lg bg-muted p-3 text-sm text-destructive">{msg}</p>}
       </form>
