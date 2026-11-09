@@ -43,7 +43,7 @@ export function LaunchpadDetails({ d }: { d: D }) {
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary-soft text-sm font-bold text-accent-foreground">{m.number}</span>
                 <span className="min-w-0 flex-1">
                   <span className="block font-bold">Module {m.number} — {m.title}</span>
-                  <span className="block text-xs text-muted-foreground">Days {m.lessons[0].day}–{m.lessons.at(-1)!.day} · {m.lessons.length} lessons{m.quiz ? " · 1 quiz" : ""}{m.finalAssessment ? " · Final assessment" : ""}</span>
+                  <span className="block text-xs text-muted-foreground">Days {m.lessons[0]?.day}–{m.lessons.at(-1)!.day} · {m.lessons.length} lessons{m.quiz ? " · 1 quiz" : ""}{m.finalAssessment ? " · Final assessment" : ""}</span>
                 </span>
                 <ChevronDown className={`mt-1 h-5 w-5 shrink-0 transition ${isOpen ? "rotate-180" : ""}`} />
               </button>
