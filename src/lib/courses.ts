@@ -57,7 +57,7 @@ export const courses: Course[] = [
     category: "Career Development",
     description: "A complete career programme covering career clarity, resume building, interview preparation and job search strategy.",
     level: "Beginner",
-    duration: "Self-Paced",
+    duration: "30 Days",
     price: 5999,
     access: "paid",
     premium: true,
