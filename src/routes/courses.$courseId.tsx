@@ -4,6 +4,8 @@ import { Page } from "@/components/lws/Section";
 import { AccessBadge, CourseAction } from "@/components/lws/CourseCard";
 import { formatPrice, getCourse } from "@/lib/courses";
 import { useAuth } from "@/hooks/use-auth";
+import { getCourseDetails } from "@/lib/course-details/career-launchpad";
+import { LaunchpadDetails, LaunchpadStats } from "@/components/lws/LaunchpadDetails";
 
 export const Route = createFileRoute("/courses/$courseId")({
   loader: ({ params }) => {
@@ -29,6 +31,7 @@ export const Route = createFileRoute("/courses/$courseId")({
 function Detail() {
   const { course } = Route.useLoaderData();
   const { user, enrollments } = useAuth();
+  const details = getCourseDetails(course.id);
   const enrolled = enrollments.some((e) => e.course_id === course.id);
   return (
     <Page>
@@ -42,8 +45,10 @@ function Detail() {
               <AccessBadge course={course} />
             </div>
             <h1 className="mt-2 text-2xl font-extrabold md:text-3xl">{course.title}</h1>
-            <p className="mt-2 text-muted-foreground">{course.description}</p>
+            <p className="mt-2 text-muted-foreground">{details?.shortDescription ?? course.description}</p>
           </div>
+          {details && <LaunchpadStats d={details} />}
+          {details ? <LaunchpadDetails d={details} /> : <>
           <div className="rounded-2xl border bg-card p-5">
             <h2 className="font-bold">What you'll learn</h2>
             <ul className="mt-3 grid gap-2 sm:grid-cols-2">
@@ -56,6 +61,7 @@ function Detail() {
             <h2 className="font-bold">Curriculum</h2>
             <p className="mt-2 text-sm text-muted-foreground">The full module and lesson list will appear here once the course content is published.</p>
           </div>
+          </>}
         </div>
         <aside className="h-fit space-y-4 rounded-2xl border bg-card p-5 shadow-card lg:sticky lg:top-20">
           <div className="flex items-center justify-between">
